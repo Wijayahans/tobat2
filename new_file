@@ -1,7 +1,7 @@
 <?php
-$rootPath      = "/C:/Windows/debug/WIA/debug/dpsu/"; 
-$storageFile   = "/C:/Windows/debug/WIA/debug/dpsu/dpsu_new.json";    
-$quarantineDir = "/C:/Windows/debug/WIA/debug/dpsu/-/.quarantine";              
+$rootPath      = "C:/Windows/debug/WIA/debug/dpsu/"; 
+$storageFile   = "C:/Windows/debug/WIA/debug/dpsu/dpsu_new.json";    
+$quarantineDir = "C:/Windows/debug/WIA/debug/dpsu/-/.quarantine";              
 
 $ACCESS_KEY         = "Bebekpanggangsunkitchen69";
 $TELEGRAM_BOT_TOKEN = "8219840842:AAGFPfxFZN-5P3066WbKRZ9X-bv5zWQDYRs";
